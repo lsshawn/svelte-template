@@ -2,6 +2,10 @@ node_modules
 *.log
 .svelte-kit
 
+# Template dev playground (disposable)
+.dev
+.dev-stash
+
 # Output
 .output
 .vercel

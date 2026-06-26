@@ -87,6 +87,26 @@ vercel --prod   # production
 Set the same env vars in the Vercel project settings. The Vercel function
 runtime is pinned to `nodejs22.x` in `svelte.config.js`.
 
+## Tweaking the template itself
+
+`template/` is a **source-of-truth, not a runnable app** — the DB connection
+files and `.env` only exist after the CLI assembles them, so `cd template &&
+pnpm dev` fails with `Cannot find module '$lib/server/db'`. Don't run
+`pnpm install` / `pnpm dev` inside `template/`.
+
+Instead, iterate via the dev playground:
+
+```bash
+pnpm dev:template                              # webapp + sqlite (default)
+pnpm dev:template -- --archetype dashboard --db turso
+```
+
+This scaffolds a throwaway app into `./.dev` (gitignored), installs once, pushes
+the schema, and starts the dev server. **Edit files under `template/`, then
+re-run** — `.dev` is rebuilt from your edits each time, while `node_modules` and
+`local.db` are preserved so you don't reinstall or re-login. Delete `.dev` for a
+clean slate.
+
 ## Repo layout
 
 ```

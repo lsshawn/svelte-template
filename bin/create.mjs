@@ -112,16 +112,35 @@ async function copyDir(src, dest, skip = () => false) {
 	await fs.mkdir(dest, { recursive: true });
 	const entries = await fs.readdir(src, { withFileTypes: true });
 	for (const entry of entries) {
+		// Never copy build/dep artifacts — the template dir may have been run
+		// directly (pnpm install/dev), leaving node_modules/.svelte-kit behind.
+		if (ALWAYS_SKIP.has(entry.name)) continue;
 		const srcPath = path.join(src, entry.name);
 		const destPath = path.join(dest, entry.name);
 		if (skip(srcPath, entry)) continue;
-		if (entry.isDirectory()) {
+		if (entry.isSymbolicLink()) {
+			const link = await fs.readlink(srcPath);
+			await fs.symlink(link, destPath);
+		} else if (entry.isDirectory()) {
 			await copyDir(srcPath, destPath, skip);
-		} else {
+		} else if (entry.isFile()) {
 			await fs.copyFile(srcPath, destPath);
 		}
 	}
 }
+
+const ALWAYS_SKIP = new Set([
+	'node_modules',
+	'.svelte-kit',
+	'.vercel',
+	'build',
+	'dist',
+	'.dev',
+	'.dev-stash',
+	'local.db',
+	'local.db-shm',
+	'local.db-wal'
+]);
 
 async function rmrf(p) {
 	await fs.rm(p, { recursive: true, force: true });

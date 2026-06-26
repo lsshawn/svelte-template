@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"new": "node bin/create.mjs",
-		"test:gen": "node bin/test-generate.mjs"
+		"dev:template": "node bin/dev-template.mjs"
 	},
 	"files": [
 		"bin",

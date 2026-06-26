@@ -1,0 +1,22 @@
+{
+	"name": "sk-template",
+	"version": "0.1.0",
+	"description": "Opinionated SvelteKit 5 + Tailwind 4 + DaisyUI + Drizzle scaffolder. Spin up landing pages, dashboards, or full web apps with Turso / Neon / local SQLite.",
+	"type": "module",
+	"bin": {
+		"sk-template": "bin/create.mjs",
+		"create-sk": "bin/create.mjs"
+	},
+	"scripts": {
+		"new": "node bin/create.mjs",
+		"test:gen": "node bin/test-generate.mjs"
+	},
+	"files": [
+		"bin",
+		"template"
+	],
+	"engines": {
+		"node": ">=20"
+	},
+	"license": "MIT"
+}

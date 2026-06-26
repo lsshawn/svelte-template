@@ -1,0 +1,11 @@
+node_modules
+/build
+/dist
+/.svelte-kit
+/.vercel
+.env
+.env.*
+!.env.example
+local.db
+local.db-*
+*.sqlite

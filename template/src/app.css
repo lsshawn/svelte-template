@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@plugin 'daisyui' {
+	themes:
+		light --default,
+		dim --prefersdark,
+		night;
+}
+
+/* Brand accent — override per project. */
+@theme {
+	--color-brand: #006dae;
+	--color-brand-content: #ffffff;
+}
+
+html {
+	font-size: 16px;
+}
+
+/* Subtle, thin scrollbars for dashboard tables / scroll regions. */
+.scroll-thin::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+	background: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+	border-radius: 4px;
+}
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+	background: color-mix(in oklab, var(--color-base-content) 35%, transparent);
+}

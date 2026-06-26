@@ -1,4 +1,4 @@
-# sk-template
+# Sveltekit Template
 
 An opinionated **SvelteKit 5** scaffolder for spinning up new projects fast — built for an AI agent on a VPS to clone, code against, and ship to Vercel.
 

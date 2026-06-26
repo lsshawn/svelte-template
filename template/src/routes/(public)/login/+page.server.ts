@@ -1,13 +1,20 @@
+import { dev } from '$app/environment';
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
-import { requestOtp, verifyOtp } from '$lib/server/otp';
+import { requestOtp, verifyOtp, DEV_OTP } from '$lib/server/otp';
+import { DEMO_EMAIL } from '$lib/server/dev-seed';
 import { createSession, setSessionTokenCookie } from '$lib/server/auth';
 import { hasGoogle, hasGithub } from '$lib/server/oauth';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.session) redirect(307, '/dashboard');
-	return { hasGoogle, hasGithub };
+	// Surface dev login helpers so the UI can show a hint / prefill.
+	return {
+		hasGoogle,
+		hasGithub,
+		devLogin: dev ? { email: DEMO_EMAIL, otp: DEV_OTP } : null
+	};
 };
 
 const emailSchema = z.object({ email: z.string().email() });

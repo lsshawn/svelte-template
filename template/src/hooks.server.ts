@@ -1,7 +1,10 @@
 import type { Handle } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth';
+import { ensureDevSeed } from '$lib/server/dev-seed';
 
 const handleAuth: Handle = async ({ event, resolve }) => {
+	await ensureDevSeed();
+
 	const token = event.cookies.get(auth.sessionCookieName);
 	if (!token) {
 		event.locals.user = null;

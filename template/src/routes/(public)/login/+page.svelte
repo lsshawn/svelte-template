@@ -6,7 +6,13 @@
 	let { form, data } = $props();
 
 	const step = $derived(form?.step === 'verify' ? 'verify' : 'request');
-	const email = $derived(form?.email ?? '');
+	// Prefill the demo email in dev so it's one click to sign in.
+	const email = $derived(form?.email ?? data.devLogin?.email ?? '');
+
+	// Focus the field as soon as it mounts (reliable across step re-renders).
+	function autofocus(node: HTMLInputElement) {
+		node.focus();
+	}
 </script>
 
 <svelte:head>
@@ -29,6 +35,7 @@
 								>Email</span
 							>
 							<input
+								use:autofocus
 								type="email"
 								name="email"
 								required
@@ -53,6 +60,7 @@
 								>Code</span
 							>
 							<input
+								use:autofocus
 								type="text"
 								name="code"
 								inputmode="numeric"
@@ -60,6 +68,7 @@
 								required
 								placeholder="000000"
 								class="input input-bordered mt-1 w-full text-center text-lg tracking-[0.5em]"
+								value={data.devLogin?.otp ?? ''}
 							/>
 						</label>
 						{#if form?.error}
@@ -89,8 +98,16 @@
 			</div>
 		</div>
 
-		<p class="mt-4 text-center text-xs text-base-content/50">
-			Codes are printed to the server console in dev.
-		</p>
+		{#if data.devLogin}
+			<div class="mt-4 rounded-lg border border-warning/30 bg-warning/10 px-3 py-2 text-center text-xs">
+				<span class="font-semibold">Dev mode</span> · sign in as
+				<span class="font-mono">{data.devLogin.email}</span> with code
+				<span class="font-mono">{data.devLogin.otp}</span>
+			</div>
+		{:else}
+			<p class="mt-4 text-center text-xs text-base-content/50">
+				Codes are printed to the server console in dev.
+			</p>
+		{/if}
 	</div>
 </div>
